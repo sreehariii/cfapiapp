@@ -22,10 +22,27 @@ else:
     mongo_url = "mongodb://localhost"
 
 
+if 'VCAP_SERVICES' in os.environ:
+    vcap_services = json.loads(os.environ['VCAP_SERVICES'])
+    # XXX: avoid hardcoding here
+    mongo_srv = vcap_services['fs-storage'][0]
+    cred = mongo_srv['volume_mounts'][0]
+    container_dir = cred['container_dir']
+    
+
+
+
 app = Flask(__name__)
 app.config["MONGO_URI"] = mongo_url
 ##"mongodb+srv://dbuser:dbuserpassword@cluster0-o5lsl.mongodb.net/runtimeapi?retryWrites=true&w=majority"
 mongo = PyMongo(app)
+
+
+
+@app.route("/dir", methods=['GET'])
+def getdir():
+	return container_dir
+
 
 @app.route('/api/rthosts', methods=['POST'])
 def add_runtimehost():
