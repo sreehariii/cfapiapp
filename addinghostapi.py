@@ -4,18 +4,7 @@ import json
 from mongoengine import *
 import os
 
-import subprocess
-import pem
-import OpenSSL
-import ssl
 
-from cryptography import x509
-from cryptography.hazmat.backends import default_backend
-
-from datetime import datetime
-from apscheduler.scheduler import Scheduler
-sched = Scheduler()
-sched.start()
 
 if 'VCAP_SERVICES' in os.environ:
     vcap_services = json.loads(os.environ['VCAP_SERVICES'])
